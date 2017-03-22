@@ -1,0 +1,35 @@
+/*
+Theme Name: Enfold Child
+Description: Enfold Child Theme
+Author: Taylor Chiu
+Template: enfold
+Version: 1.0.0
+*/
+
+#top .input-text, #top input[type="text"], #top input[type="input"], #top input[type="password"], #top input[type="email"], #top input[type="number"], #top input[type="url"], #top input[type="tel"], #top input[type="search"], #top textarea, #top select {
+  border: none;
+}
+
+
+#top input[type='text'],
+#top .main_color select,
+#top .main_color textarea {
+  border-bottom: 1px solid #e1e1e1;
+  color: #666666;
+  margin: 20px 0 6px 0;
+}
+
+#top input[type='text']:focus,
+#top .main_color textarea:focus {
+  box-shadow: none;
+}
+
+body .container_wrap .avia-builder-el-first,
+div .flex_column .av_one_half .flex_column_div .av-zero-column-padding .first .avia-builder-el-0 .el_before_av_one_half .avia-builder-el-first  {
+  text-align: center;
+  padding-top: 20%;
+}
+
+.main_color a {
+  color: #666666;
+}

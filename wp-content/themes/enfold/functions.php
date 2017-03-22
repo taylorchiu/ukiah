@@ -308,10 +308,10 @@ if(!function_exists('avia_register_frontend_scripts'))
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'wp-mediaelement' );
 
-    // manually add image_uploader script and cloudinary, which will launch the cloudinary widget
-    wp_register_script( 'cloudinary', 'https:////widget.cloudinary.com/global/all.js', null, null, true );
-    wp_enqueue_script('cloudinary');
-    wp_enqueue_script( 'image_uploader', get_theme_file_uri( '/js/cloudinary/image_uploader.js'), array( 'jquery' ), '1.0.0', true );
+    // // manually add image_uploader script and cloudinary, which will launch the cloudinary widget
+    // wp_register_script( 'cloudinary', 'https:////widget.cloudinary.com/global/all.js', null, null, true );
+    // wp_enqueue_script('cloudinary');
+    // wp_enqueue_script( 'image_uploader', get_theme_file_uri( '/js/cloudinary/image_uploader.js'), array( 'jquery' ), '1.0.0', true );
 
 
 		if ( is_singular() && get_option( 'thread_comments' ) ) { wp_enqueue_script( 'comment-reply' ); }
@@ -328,10 +328,6 @@ if(!function_exists('avia_register_frontend_scripts'))
 		wp_enqueue_style( 'avia-popup-css', $template_url."/js/aviapopup/magnific-popup.css", array(), '1', 'screen' );
 		wp_enqueue_style( 'avia-media'  , $template_url."/js/mediaelement/skin-1/mediaelementplayer.css", array(), '1', 'screen' );
 		wp_enqueue_style( 'avia-print' ,  $template_url."/css/print.css", array(), '1', 'print' );
-
-    // manually add styles to override cloudinary widget
-    wp_register_style( 'uploader_widget', $child_theme_url. '/css/uploader_widget.css' );
-    wp_enqueue_style( 'uploader_widget' );
 
 
 		if ( is_rtl() ) {
