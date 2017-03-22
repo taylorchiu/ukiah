@@ -32,4 +32,9 @@ div .flex_column .av_one_half .flex_column_div .av-zero-column-padding .first .a
 
 .main_color a {
   color: #666666;
+  text-decoration: none;
+}
+
+.main_color a:hover {
+  color: white;
 }
