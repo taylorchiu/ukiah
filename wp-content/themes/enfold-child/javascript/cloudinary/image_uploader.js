@@ -4,11 +4,35 @@ jQuery(document).ready(function($) {
   // TO DO: set dropdown options from hidden fields!!
 
   mountUploader(jQuery('.custom-form__add_new_image.empty'));
+  toggleImageDetails();
 
+  function toggleImageDetails() {
+    jQuery('.edit-details-button').click(function(){
+      jQuery(this).siblings('.image-details__form').toggle();
+      setDetailsButtonText(this);
+      // send to hidden fields
+    });
+  }
 
-  jQuery('.edit-details-button').click(function(){
-    jQuery(this).siblings('.image-details__form').toggle();
-  });
+  function setDetailsButtonText(button) {
+    var text = jQuery(button).text();
+    if(text == '+ Add details'){
+      jQuery(button).text('- Hide details');
+    }else if(text == '+ Edit details'){
+      jQuery(button).text('- Hide details');
+    }else if(text == '- Hide details'){
+      // check if any inputs have contents
+      var inputs = jQuery(button).siblings('.image-details__form').find('.image-details-input')
+      inputs.each(function(index, el){
+        if(jQuery(el).val()){
+          jQuery(button).text('+ Edit details');
+          return false;
+        }else{
+          jQuery(button).text('+ Add details');
+        }
+      })
+    }
+  }
 
   function mountUploader(newImageContainer) {
     jQuery(newImageContainer).find('#upload_widget_opener').cloudinary_upload_widget(
@@ -27,7 +51,6 @@ jQuery(document).ready(function($) {
     );
   }
 
-
   jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
     console.log("Single file success", e, data);
     var publicId = data[0].public_id.replace('print_requests/', '');
@@ -36,16 +59,8 @@ jQuery(document).ready(function($) {
     jQuery('#' + publicId).find('.image-filename').text(filename);
   });
 
-
-  jQuery('.image-details-input').focus(function(){
-    if(jQuery(this).val()){
-      jQuery(jQuery('.edit-details-button')[0]).html('+ Edit details');
-    };
-  })
-
-
   // get image details before submit
- // this will have to hook into the GravityForms submit
+ // button will have to hook into the GravityForms submit
   jQuery('#button').click(function(){
     var details = getImageDetails();
     imageDetailString = formatImageDetailString(details);
@@ -58,12 +73,14 @@ jQuery(document).ready(function($) {
     current.removeClass('custom-form__add_new_image empty')
       .addClass('custom-form__section')
       .attr('id', imageId);
+    // prevent clone from interfering with thumbnail mounting
     clone.find('#current_image').attr('id', '');
     clone.appendTo(jQuery('.custom-form'));
     clone.find('.image-filename').text('Filename');
     clone.find('.cloudinary-button-overrides').remove();
     mountUploader(clone);
 
+    // prep clone to be current_image
     current.find('.cloudinary-button-overrides').remove();
     current.find('#upload_widget_opener').remove();
     current.find('#current_image').attr('id','');
