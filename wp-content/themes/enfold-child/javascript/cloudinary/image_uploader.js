@@ -1,10 +1,9 @@
 jQuery(document).ready(function($) {
   var imageDetailString;
 
-  // TO DO: set dropdown options from hidden fields!!
-
   mountUploader(jQuery('.custom-form__add_new_image.empty'));
   toggleImageDetails();
+  setDropdownOptions();
 
   function toggleImageDetails() {
     jQuery('.edit-details-button').click(function(){
@@ -34,6 +33,19 @@ jQuery(document).ready(function($) {
     }
   }
 
+  function setDropdownOptions() {
+    var dropdowns = [{ id: 'paper', label: 'Paper Type' }, { id: 'border', label: 'Border' }];
+    dropdowns.forEach(function(dropdown) {
+      // get input id
+      var inputId = jQuery("label:contains('" + dropdown.label + "')").attr('for');
+      var options = jQuery('select#' + inputId + ' option');
+      jQuery(options).each(function(index, option) {
+        // var option = new Option(option.val, option.val);
+        jQuery('select#' + dropdown.id).append(jQuery(option));
+      })
+    })
+  }
+
   function mountUploader(newImageContainer) {
     jQuery(newImageContainer).find('#upload_widget_opener').cloudinary_upload_widget(
       { cloud_name: 'lightsource',
@@ -61,11 +73,11 @@ jQuery(document).ready(function($) {
 
   // get image details before submit
  // button will have to hook into the GravityForms submit
-  jQuery('#button').click(function(){
-    var details = getImageDetails();
-    imageDetailString = formatImageDetailString(details);
-    setImageDetails(imageDetailString);
-  });
+  // jQuery('#button').click(function(){
+  //   var details = getImageDetails();
+  //   imageDetailString = formatImageDetailString(details);
+  //   setImageDetails(imageDetailString);
+  // });
 
   function cloneAddNewImageSection(imageId) {
     var current = jQuery('.custom-form__add_new_image.empty');
@@ -96,7 +108,6 @@ jQuery(document).ready(function($) {
     return details;
   }
 
-
   function setInputVal(imageId, field, value) {
     // hidden fields are assigned a label with convention [field]_[imageId]
     // for example, Quantity for Image 1 is quantity_1
@@ -119,17 +130,3 @@ jQuery(document).ready(function($) {
     });
   }
 });
-
-
-// function formatImageDetailString(details) {
-//   var string = "ImageID [filename]: ";
-//   jQuery.each(details, function(key, val){
-//     if(val){
-//       string = string.concat(key + ": " + val + ", ");
-//     }else{
-//       string = string.concat(key + ": n/a, ");
-//     }
-//   });
-//   console.log(string);
-//   return string;
-// }
