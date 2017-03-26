@@ -5,6 +5,11 @@ jQuery(document).ready(function($) {
 
   mountUploader(jQuery('.custom-form__add_new_image.empty'));
 
+
+  jQuery('.edit-details-button').click(function(){
+    jQuery(this).siblings('.image-details__form').toggle();
+  });
+
   function mountUploader(newImageContainer) {
     jQuery(newImageContainer).find('#upload_widget_opener').cloudinary_upload_widget(
       { cloud_name: 'lightsource',
@@ -22,6 +27,7 @@ jQuery(document).ready(function($) {
     );
   }
 
+
   jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
     console.log("Single file success", e, data);
     var publicId = data[0].public_id.replace('print_requests/', '');
@@ -31,13 +37,9 @@ jQuery(document).ready(function($) {
   });
 
 
-  jQuery('.edit-details-button').click(function(){
-    jQuery('.image-details__form').toggle();
-  });
-
   jQuery('.image-details-input').focus(function(){
     if(jQuery(this).val()){
-      jQuery(jQuery('.edit-details-button')[0]).html('+ Edit detailsf');
+      jQuery(jQuery('.edit-details-button')[0]).html('+ Edit details');
     };
   })
 
@@ -52,7 +54,7 @@ jQuery(document).ready(function($) {
 
   function cloneAddNewImageSection(imageId) {
     var current = jQuery('.custom-form__add_new_image.empty');
-    var clone = current.clone();
+    var clone = current.clone(true);
     current.removeClass('custom-form__add_new_image empty')
       .addClass('custom-form__section')
       .attr('id', imageId);
