@@ -7,8 +7,11 @@ jQuery(document).ready(function($) {
 
   function mountUploader(newImageContainer) {
     jQuery(newImageContainer).find('#upload_widget_opener').cloudinary_upload_widget(
-      { cloud_name: 'lightsource', upload_preset: 'ztbxelcz',
-        cropping: null, folder: 'test', button_caption: 'Add New Image',
+      { cloud_name: 'lightsource',
+        upload_preset: 'ztbxelcz',
+        cropping: null,
+        folder: 'test',
+        button_caption: 'Add New Image',
         button_class: 'cloudinary-button-overrides',
         show_powered_by: false,
         sources: ['local'],
@@ -19,10 +22,12 @@ jQuery(document).ready(function($) {
     );
   }
 
-  jQuery(document).on('cloudinarywidgetfileuploadsuccess', function(e, data) {
+  jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
     console.log("Single file success", e, data);
-    jQuery('.image-filename').text(data.original_filename + "." + data.format);
-    cloneAddNewImageSection();
+    var publicId = data[0].public_id.replace('print_requests/', '');
+    cloneAddNewImageSection(publicId);
+    var filename = data[0].original_filename.replace(' ', '_') + "." + data[0].format;
+    jQuery('#' + publicId).find('.image-filename').text(filename);
   });
 
 
@@ -45,16 +50,22 @@ jQuery(document).ready(function($) {
     setImageDetails(imageDetailString);
   });
 
-  function cloneAddNewImageSection() {
-    var current = jQuery('.custom-form__add_new_image ').removeClass('empty');
-    var clone = current.clone().addClass('empty');
+  function cloneAddNewImageSection(imageId) {
+    var current = jQuery('.custom-form__add_new_image.empty');
+    var clone = current.clone();
+    current.removeClass('custom-form__add_new_image empty')
+      .addClass('custom-form__section')
+      .attr('id', imageId);
     clone.find('#current_image').attr('id', '');
     clone.appendTo(jQuery('.custom-form'));
     clone.find('.image-filename').text('Filename');
     clone.find('.cloudinary-button-overrides').remove();
     mountUploader(clone);
+
     current.find('.cloudinary-button-overrides').remove();
     current.find('#upload_widget_opener').remove();
+    current.find('#current_image').attr('id','');
+    clone.find('.custom-form__image').attr('id','current_image');
   }
 
   function getImageDetails(imageId) {

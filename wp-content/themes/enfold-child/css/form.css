@@ -12,7 +12,8 @@
   font-size: 18px;
 }
 
-.custom-form__add_new_image {
+.custom-form__add_new_image,
+.custom-form__section {
   width: 900px;
   height: 200px;
   display: flex;
