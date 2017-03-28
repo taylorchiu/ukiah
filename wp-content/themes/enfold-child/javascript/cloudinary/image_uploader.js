@@ -2,8 +2,10 @@ jQuery(document).ready(function($) {
   var imageDetailString;
 
   mountUploader(jQuery('.custom-form__add_new_image.empty'));
+  listenForCloudinarySuccess();
   toggleImageDetails();
   setDropdownOptions();
+  updateForm();
 
   function toggleImageDetails() {
     jQuery('.edit-details-button').click(function(){
@@ -34,7 +36,7 @@ jQuery(document).ready(function($) {
   }
 
   function setDropdownOptions() {
-    var dropdowns = [{ id: 'paper', label: 'Paper Type' }, { id: 'border', label: 'Border' }];
+    var dropdowns = [{ id: 'paper', label: 'paper_' }, { id: 'border', label: 'border_' }];
     dropdowns.forEach(function(dropdown) {
       // get input id
       var inputId = jQuery("label:contains('" + dropdown.label + "')").attr('for');
@@ -63,28 +65,23 @@ jQuery(document).ready(function($) {
     );
   }
 
-  jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
-    console.log("Single file success", e, data);
-    var publicId = data[0].public_id.replace('print_requests/', '');
-    cloneAddNewImageSection(publicId);
-    var filename = data[0].original_filename.replace(' ', '_') + "." + data[0].format;
-    jQuery('#' + publicId).find('.image-filename').text(filename);
-  });
-
-  // get image details before submit
- // button will have to hook into the GravityForms submit
-  // jQuery('#button').click(function(){
-  //   var details = getImageDetails();
-  //   imageDetailString = formatImageDetailString(details);
-  //   setImageDetails(imageDetailString);
-  // });
+  function listenForCloudinarySuccess() {
+    jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
+      console.log("Single file success", e, data);
+      var publicId = data[0].public_id.replace('print_requests/', '');
+      cloneAddNewImageSection(publicId);
+      var filename = data[0].original_filename.replace(' ', '_') + "." + data[0].format;
+      jQuery(".image-details[data-image-id*=" + publicId + "]").find('.image-filename').text(filename);
+    });
+  }
 
   function cloneAddNewImageSection(imageId) {
     var current = jQuery('.custom-form__add_new_image.empty');
     var clone = current.clone(true);
     current.removeClass('custom-form__add_new_image empty')
       .addClass('custom-form__section')
-      .attr('id', imageId);
+      .attr('data-image-id', imageId);
+    current.find('.image-details').attr('data-image-id', imageId);
     // prevent clone from interfering with thumbnail mounting
     clone.find('#current_image').attr('id', '');
     clone.appendTo(jQuery('.custom-form'));
@@ -99,33 +96,58 @@ jQuery(document).ready(function($) {
     clone.find('.custom-form__image').attr('id','current_image');
   }
 
-  function getImageDetails(imageId) {
+  // THIS DOESNT WORK BC IT RUNS AFTER SUBMIT
+  // function onSubmit() {
+  //   jQuery(document).bind('gform_post_render', function(){
+  //     alert('gform_post_render');
+  //     setImageDetails();
+  //   });
+  // }
+
+  function updateForm() {
+    // try to run this on focus lost in custom form section
+    jQuery('.image-details-input').change(function() {
+      setImageDetails();
+    });
+  }
+
+
+  function getImageDetails(publicId) {
+    // find the image-details section by publicId
+    var imageDetailsSection = jQuery(".image-details[data-image-id*=" + publicId + "]");
+    var inputs = jQuery(imageDetailsSection).find('input');
+    var selects = jQuery(imageDetailsSection).find('select');
+    var responses = jQuery.merge(inputs, selects);
     var details = {};
-    jQuery(".image-details-input #"  + imageId).each(function(){
-      details[this.id] = this.value;
+    // loop through each input, build the details hash
+    jQuery.each(responses, function(index, el) {
+      var inputId = jQuery(el).attr('id');
+      details[inputId] = el.value;
     });
     console.log(details);
     return details;
   }
 
-  function setInputVal(imageId, field, value) {
+  function setInputVal(imageIndex, field, value) {
     // hidden fields are assigned a label with convention [field]_[imageId]
-    // for example, Quantity for Image 1 is quantity_1
-    var labelText = field + "_" + imageId
+    // for example, Quantity for Image 1 has the label quantity_1
+    var labelText = field + "_" + imageIndex;
     var inputId = jQuery("label:contains(" + labelText + ")").attr('for');
     jQuery("#" + inputId).val(value);
+    console.log("setting value of" + value + "for: " + inputId);
   }
 
   function setImageDetails() {
     // assign image details to hidden fields per GF markup
-      // TO DO: each image should have a more specific class
-    var imageQuantity = jQuery.find('.cloudinary-thumbnails').length;
-    var imageId;
-    imageQuantity.forEach(function(img, index) {
-      imageId = jQuery(img).attr('id');
-      var imageDetails = getImageDetails(imageId);
-      imageDetails.each(function(key, val) {
-        setInputVal(imageId, key, val);
+    var imageSections = jQuery('.custom-form__section');
+    var imageIndex;
+    var publicId;
+    jQuery.each(imageSections, function(index, section) {
+      imageIndex = index;
+      publicId = jQuery(section).attr('data-image-id');
+      var imageDetails = getImageDetails(publicId);
+      jQuery.each(imageDetails, function(index, val) {
+        setInputVal(imageIndex, index, val);
       });
     });
   }
