@@ -7,6 +7,7 @@ jQuery(document).ready(function($) {
   listenForDetailsClick();
   setDropdownOptions();
   updateForm();
+  listenForSubmit();
 
   function listenForDetailsClick() {
     jQuery('.edit-details-button').click(function(){
@@ -118,7 +119,6 @@ jQuery(document).ready(function($) {
     IMAGE_DETAILS[publicId].filename = filename;
     IMAGE_DETAILS[publicId][field] = value;
     setHiddenField();
-    // TODO: warn user if they are editing fields with no publicId / no image uploaded?
   }
 
   function buildString() {
@@ -141,6 +141,17 @@ jQuery(document).ready(function($) {
     var inputId = jQuery("label:contains('Image Details')").attr('for');
     var imageDetails = buildString();
     jQuery("#" + inputId).val(imageDetails);
+  }
+
+  function listenForSubmit() {
+    $('#gform_1 input[type=submit]').click(function () {
+      handleSubmit();
+    });
+  }
+
+  function handleSubmit() {
+    jQuery('.custom-form').hide();
+
   }
 
 });
