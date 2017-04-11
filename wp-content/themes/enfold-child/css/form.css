@@ -45,6 +45,7 @@
 }
 
 .edit-details-button {
+  display: none;
   padding-left: 8px;
   cursor: pointer;
 }

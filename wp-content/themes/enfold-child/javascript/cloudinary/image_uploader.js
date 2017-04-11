@@ -12,7 +12,6 @@ jQuery(document).ready(function($) {
     jQuery('.edit-details-button').click(function(){
       jQuery(this).siblings('.image-details__form').toggle();
       setDetailsButtonText(this);
-      // send to hidden fields
     });
   }
 
@@ -76,8 +75,10 @@ jQuery(document).ready(function($) {
       imageSection.find('.image-details').attr('data-image-id', publicId);
       imageSection.find('.image-details').attr('data-original-filename', filename);
       // replace header with filename
-      jQuery(".image-details[data-image-id*=" + publicId + "]").find('.image-filename').text(filename);
+      var imageDetailsSection = jQuery(".image-details[data-image-id*=" + publicId + "]")
+      imageDetailsSection.find('.image-filename').text(filename);
       cloneAddNewImageSection(imageSection, publicId);
+      imageDetailsSection.find('.edit-details-button').toggle();
     });
   }
 
