@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
   listenForCloudinarySuccess();
   listenForDetailsClick();
   setDropdownOptions();
-  updateForm();
+  listenForFormChange();
   listenForSubmit();
 
   function listenForDetailsClick() {
@@ -71,6 +71,7 @@ jQuery(document).ready(function($) {
       var publicId = data[0].public_id.replace('print_requests/', '');
       var filename = data[0].original_filename.replace(' ', '_') + "." + data[0].format;
       var imageSection = jQuery('.custom-form__add_new_image.empty');
+      // set publicId and original-filename data attributes
       imageSection.find('.image-details').attr('data-image-id', publicId);
       imageSection.find('.image-details').attr('data-original-filename', filename);
       // replace header with filename
@@ -100,7 +101,7 @@ jQuery(document).ready(function($) {
     jQuery.each(clone.find('image-details-input'), function(input){ jQuery(input).val("")});
   }
 
-  function updateForm() {
+  function listenForFormChange() {
     jQuery('.image-details-input').change(function(el) {
       buildDetailsObject(el);
     });
@@ -125,8 +126,10 @@ jQuery(document).ready(function($) {
     var images = [];
     jQuery.each(IMAGE_DETAILS, function(publicId, detailsObj) {
       var image = [];
+      var imgUrl = cloudinary.image(publicId, {} );
       image.push("=========================");
       image.push("Cloudinary Image ID: " + publicId);
+      image.push("Cloudinary Image URL: " + imgUrl);
       jQuery.each(detailsObj, function(key, val){
         key = key.charAt(0).toUpperCase() + key.slice(1);
         image.push(key + ": " + val + ", ");
@@ -151,7 +154,8 @@ jQuery(document).ready(function($) {
 
   function handleSubmit() {
     jQuery('.custom-form').hide();
-
+    // build cloudinary image URL for detail section?
+    // submit image details to cloudinary metadata
   }
 
 });
