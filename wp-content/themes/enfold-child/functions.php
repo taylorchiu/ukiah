@@ -12,8 +12,8 @@ function enqueue_parent_styles() {
   wp_enqueue_style( 'form', $child_theme_url.'/css/form.css' );
 
   // manually add image_uploader script and cloudinary, which will launch the cloudinary widget
-  wp_register_script( 'cloudinary', 'https:////widget.cloudinary.com/global/all.js', null, null, true );
+  wp_register_script( 'cloudinary', 'https://widget.cloudinary.com/global/all.js', null, null, true );
   wp_enqueue_script('cloudinary');
-  wp_register_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js', array( 'jquery' ));
+  wp_register_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js', array('jquery'));
   wp_enqueue_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js' );
 }

@@ -60,7 +60,7 @@ jQuery(document).ready(function($) {
         show_powered_by: false,
         sources: ['local'],
         stylesheet: 'http://localhost:8888/wp-content/themes/enfold-child/css/uploader_widget.css',
-        thumbnails: '#current_image',
+        thumbnails: '.custom-form__image',
        },
       function(error, result) { console.log(error, result) }
     );
