@@ -1,17 +1,30 @@
+<!-- DO NOT CHANGE these classes and ids or the image_uploader.js will break! -->
+
 <div class='custom-form'>
-  <div class='custom-form__image'>
+  <div class='custom-form__add_new_image empty'>
     <div class='custom-form__image-container'>
-      <div id='upload_widget_opener'></div>
+      <div id='upload_widget_opener'>
+        <span class='upload_widget_button'>
+         + Add Image
+        </span>
+      </div>
+      <div class='custom-form__image'></div>
     </div>
     <div class='image-details'>
-      <h3 class='image-filename'>#image filename</h3>
-      <span> + Edit details </span>
+      <span class='image-filename'>#image filename</span>
+      <span class='edit-details-button'> + Add details </span>
       <div class='image-details__form'>
-        <input>Quantity</input>
-        <input>Size</input>
-        <input>Material</input>
-        <input>Border</input>
+        <div class='form-toggle'>
+          <input class='image-details-input' id='quantity' placeholder='Quantity'></input>
+          <input class='image-details-input' id='size' placeholder='Size'></input>
+          <select class='image-details-select' id='paper' placeholder='Paper'></select>
+          <select class='image-details-select' id='border' placeholder='Border'></select>
+        </div>
       </div>
     </div>
   </div>
+  <div class='custom-form__new'></div>
 </div>
+
+<!--  Include the gravity forms shortcode to render the rest of the form-->
+<!-- [gravityform id="1" title="false" description="false" ajax="true"] -->
