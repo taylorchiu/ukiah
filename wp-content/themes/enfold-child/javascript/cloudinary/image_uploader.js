@@ -70,10 +70,13 @@ jQuery(document).ready(function($) {
     jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
       var publicId = data[0].public_id.replace('print_requests/', '');
       var filename = data[0].original_filename.replace(' ', '_') + "." + data[0].format;
+      var imgUrl = data[0].secure_url;
       var imageSection = jQuery('.custom-form__add_new_image.empty');
+      var imageDetails = imageSection.find('.image-details');
       // set publicId and original-filename data attributes
-      imageSection.find('.image-details').attr('data-image-id', publicId);
-      imageSection.find('.image-details').attr('data-original-filename', filename);
+      imageDetails.attr('data-image-id', publicId);
+      imageDetails.attr('data-original-filename', filename);
+      imageDetails.attr('data-url', imgUrl);
       // replace header with filename
       var imageDetailsSection = jQuery(".image-details[data-image-id*=" + publicId + "]")
       imageDetailsSection.find('.image-filename').text(filename);
@@ -112,32 +115,35 @@ jQuery(document).ready(function($) {
     var value = el.target.value;
     var publicId = jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-image-id');
     var filename = jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-original-filename');
-    updateImageDetails(publicId, filename, field, value);
+    var imgUrl = jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-url');
+    updateImageDetails(publicId, filename, field, value, imgUrl);
   }
 
-  function updateImageDetails(publicId, filename, field, value) {
+  function updateImageDetails(publicId, filename, field, value, imgUrl) {
     IMAGE_DETAILS[publicId] = IMAGE_DETAILS[publicId] || {};
     IMAGE_DETAILS[publicId].filename = filename;
     IMAGE_DETAILS[publicId][field] = value;
+    IMAGE_DETAILS[publicId].url = imgUrl;
     setHiddenField();
   }
 
   function buildString() {
-    var images = [];
+    var allImageDetails = [];
     jQuery.each(IMAGE_DETAILS, function(publicId, detailsObj) {
-      var image = [];
-      var imgUrl = cloudinary.image(publicId, {} );
-      image.push("=========================");
-      image.push("Cloudinary Image ID: " + publicId);
-      image.push("Cloudinary Image URL: " + imgUrl);
+      var detailString = [];
+      detailString.push("=========================");
+      detailString.push("Cloudinary Image ID: " + publicId);
+      detailString.push("Cloudinary URL: " + detailsObj.url);
+      delete detailsObj.url;
+      // detailString.push("Cloudinary Image URL: " + )
       jQuery.each(detailsObj, function(key, val){
         key = key.charAt(0).toUpperCase() + key.slice(1);
-        image.push(key + ": " + val + ", ");
+        detailString.push(key + ": " + val + ", ");
       });
-      image.push("=========================\n");
-      images.push(image.join("\n"));
+      detailString.push("=========================\n");
+      allImageDetails.push(detailString.join("\n"));
     })
-    return images.join("\n");
+    return allImageDetails.join("\n");
   }
 
   function setHiddenField() {
