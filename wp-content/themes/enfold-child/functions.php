@@ -19,4 +19,6 @@ function enqueue_parent_styles() {
   wp_enqueue_script('cloudinary');
   wp_register_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js', array('jquery'));
   wp_enqueue_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js' );
+  wp_register_script('form', $child_theme_url.'/javascript/form.js', array('jquery'));
+  wp_enqueue_script('form');
 }
