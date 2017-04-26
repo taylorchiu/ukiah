@@ -4,13 +4,16 @@
   border: 1px solid darkslategray;
   cursor: pointer;
 }
+
 .upload_widget_button {
   line-height: 80px;
   text-align: center;
   color: darkslategray;
   font-size: 18px;
 }
-.custom-form__add_new_image, .custom-form__section {
+
+.custom-form__add_new_image,
+.custom-form__section {
   width: 900px;
   height: 200px;
   display: flex;
@@ -18,6 +21,7 @@
   justify-content: center;
   background-color: whitesmoke;
 }
+
 .custom-form__image-container {
   color: white;
   padding: 20px;
@@ -26,6 +30,7 @@
   display: flex;
   justify-content: flex-end;
 }
+
 .image-details {
   display: flex;
   flex-direction: column;
@@ -33,27 +38,38 @@
   padding-left: 20px;
   width: 50%;
 }
+
 .image-filename {
   font-size: 24px;
   padding: 20px 0;
 }
+
 .edit-details-button {
   display: none;
   padding-left: 8px;
   cursor: pointer;
 }
+
 .image-details__form {
   display: none;
 }
+
 .form-toggle {
   display: flex;
   flex-direction: column;
   font-size: 12px;
 }
+
 .image-details__form input {
   height: 12px;
   margin: 4px;
 }
-.gravity_form_field .ginput_container input[type='text'], .gravity_form_field .ginput_container textarea {
-  background-color: white !important;
+
+// GRAVITY FORM OVERRIDES
+.gravity_form_field {
+  .ginput_container{
+    input[type='text'], textarea {
+      background-color: white !important; // deeply nested classnames!
+    }
+  }
 }
