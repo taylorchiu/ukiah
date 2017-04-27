@@ -1,19 +1,24 @@
-#upload_widget_opener {
-  background-color: lightgray;
-  height: 80px;
-  border: 1px solid darkslategray;
-  cursor: pointer;
-}
-
 .upload_widget_button {
-  line-height: 80px;
-  text-align: center;
-  color: darkslategray;
+  border: 2px solid gray;
+  box-shadow: none;
+  color: gray;
+  cursor: pointer;
+  font-family: Montserrat, "Helvetica Neue", sans-serif;
   font-size: 18px;
+  line-height: 80px;
+  padding: 6px;
+  text-align: center;
+  text-decoration: uppercase;
+
 }
 
-.custom-form__add_new_image,
-.custom-form__section {
+.custom-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-form__add_new_image {
   width: 900px;
   height: 200px;
   display: flex;
@@ -22,26 +27,47 @@
   background-color: whitesmoke;
 }
 
+.custom-form__section {
+  width: 900px;
+  min-height: 230px;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+
+  &:hover{
+    background-color: whitesmoke;
+  }
+}
+
 .custom-form__image-container {
+  align-items: center;
   color: white;
+  display: flex;
+  height: 100%;
+  justify-content: flex-end;
   padding: 20px;
   text-align: right;
   width: 50%;
-  display: flex;
-  justify-content: flex-end;
 }
 
 .image-details {
   display: flex;
   flex-direction: column;
-  align-items: left;
-  padding-left: 20px;
+  justify-content: flex-start;
+  padding: 20px;
   width: 50%;
 }
 
+.image-details-select, #top .main_color select {
+  background-color: white;
+  margin: 4px 0;
+  padding: 4px 0;
+  width: 300px;
+}
+
 .image-filename {
+  color: gray;
   font-size: 24px;
-  padding: 20px 0;
 }
 
 .edit-details-button {
@@ -52,6 +78,7 @@
 
 .image-details__form {
   display: none;
+  padding-left: 14px;
 }
 
 .form-toggle {
@@ -61,8 +88,25 @@
 }
 
 .image-details__form input {
-  height: 12px;
-  margin: 4px;
+  height: 20px;
+  margin: 4px 0;
+  width: 150px;
+  border-bottom: 1px solid #e1e1e1 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+}
+
+.cloudinary-thumbnails {
+  margin: 0 !important;
+}
+
+.cloudinary-thumbnail {
+  margin: 0 !important;
+}
+
+.cloudinary-thumbnail img {
+  border: none !important;
 }
 
 // GRAVITY FORM OVERRIDES
@@ -70,6 +114,10 @@
   .ginput_container{
     input[type='text'], textarea {
       background-color: white !important; // deeply nested classnames!
+
+      &:hover {
+        background-color: whitesmoke;
+      }
     }
   }
 }

@@ -11,7 +11,7 @@ function enqueue_parent_styles() {
   // WP-SCSS plugin automatically compiles all css files
   // Not sure why the child style.css has to live on the root or it won't override the parent style.css
   // wp_enqueue_style( 'parent-style', $template_url.'/style.css' );
-  // wp_enqueue_style( 'uploader_widget', $child_theme_url.'/css/uploader_widget.css' );
+  // wp_enqueue_style( 'uploader_widget', $child_theme_url.'/scss/uploader_widget.scss' );
   // wp_enqueue_style( 'form', $child_theme_url.'/scss/form.scss' );
 
   // manually add image_uploader script and cloudinary, which will launch the cloudinary widget

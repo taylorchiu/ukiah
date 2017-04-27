@@ -20,8 +20,8 @@ jQuery(document).ready(function($) {
     var form = jQuery(button).siblings('.image-details__form');
     var text = jQuery(button).text();
     if(text == '+ details'){
-      jQuery(button).text('- details');
-    }else if(text == '- details'){
+      jQuery(button).text('- hide details');
+    }else if(text == '- hide details'){
       jQuery(button).text('+ details');
     }
     jQuery(button).toggleClass('open');
@@ -55,12 +55,13 @@ jQuery(document).ready(function($) {
         upload_preset: 'ztbxelcz',
         cropping: null,
         folder: 'test',
-        button_caption: 'Add New Image',
+        button_caption: '+ Add image',
         button_class: 'cloudinary-button-overrides',
         show_powered_by: false,
         sources: ['local'],
         stylesheet: 'http://localhost:8888/wp-content/themes/enfold-child/css/uploader_widget.css',
         thumbnails: '.custom-form__image',
+        thumbnail_transformation: {width: 160, height: 120, crop: 'limit'},
        },
       function(error, result) { console.log(error, result) }
     );
@@ -152,16 +153,14 @@ jQuery(document).ready(function($) {
     jQuery("#" + inputId).val(imageDetails);
   }
 
-  function listenForSubmit() {
-    $('#gform_1 input[type=submit]').click(function () {
-      handleSubmit();
-    });
-  }
-
-  function handleSubmit() {
-    jQuery('.custom-form').hide();
-    // build cloudinary image URL for detail section?
-    // submit image details to cloudinary metadata
-  }
+  // function listenForSubmit() {
+  //   $('#gform_1 input[type=submit]').click(function () {
+  //     handleSubmit();
+  //   });
+  // }
+  //
+  // function handleSubmit() {
+  //   jQuery('.custom-form').hide();
+  // }
 
 });

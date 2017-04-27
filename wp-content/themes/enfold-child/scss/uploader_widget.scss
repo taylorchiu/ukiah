@@ -11,17 +11,21 @@ a.cloudinary-button-overrides {
   padding: 30px 26px 26px 26px;
   text-align: center;
 }
+
 a.cloudinary-button-overrides:hover {
   background-color: gray;
   border: 2px solid gray;
   color: white;
 }
+
 #cloudinary-overlay.with_theme {
   display: block;
 }
+
 #cloudinary-overlay.modal {
   background-color: rgba(0, 0, 0, 0.85);
 }
+
 #cloudinary-widget {
   background: white;
   -moz-border-radius: 0;
@@ -32,6 +36,7 @@ a.cloudinary-button-overrides:hover {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+
 #cloudinary-navbar {
   background: white;
   border: none;
@@ -39,26 +44,32 @@ a.cloudinary-button-overrides:hover {
   margin: 0 0 10px 0;
   height: 30px;
 }
+
 #cloudinary-navbar .source {
   border-color: none;
   border-right: 0px;
   border-bottom: 3px solid none;
   height: 30px;
 }
+
 #cloudinary-navbar .source .label {
   font-size: 14px;
   line-height: 22px;
 }
+
 #cloudinary-navbar .source .icon {
   display: none;
 }
+
 #cloudinary-navbar .source.active {
   background: none;
   border-bottom: 3px solid gray;
 }
+
 #cloudinary-navbar .source.active .label {
   color: gray;
 }
+
 #cloudinary-widget .drag_area {
   background: white;
   border: 2px dashed #ddd;
@@ -67,62 +78,78 @@ a.cloudinary-button-overrides:hover {
   border-radius: 4px;
   margin: 30px 20px 0px 20px;
 }
+
 #cloudinary-widget .drag_area.in {
-  border-color: #01bb16;
+  border-color: #01BB16
 }
+
 #cloudinary-navbar .sources .icon {
-  background-position-x: 0px;
+  background-position-x: 0px ;
 }
+
 #cloudinary-navbar .close {
-  color: #555;
+  color: rgb(85, 85, 85);
 }
+
 #cloudinary-widget .button, #cloudinary-widget .button.small_button {
   box-sizing: border-box;
   color: gray;
   background: none;
   border: 2px solid gray;
 }
+
 #cloudinary-widget .button {
   height: 45px;
   width: 180px;
   line-height: 30px;
 }
+
 #cloudinary-widget .button.small_button {
   height: 35px;
   width: 140px;
   line-height: 25px;
 }
+
 #cloudinary-widget .button:hover, #cloudinary-widget .button.small_button:hover, #cloudinary-widget .upload_button_holder:hover .button {
   background: gray;
   color: white;
 }
+
 #cloudinary-widget .panel {
   height: 479px;
 }
+
 #cloudinary-widget .panel.local {
   margin-top: 20px;
 }
+
 #cloudinary-widget .panel.local .drag_area .drag_content .label {
   color: gray;
   font-size: 22px;
 }
+
 #cloudinary-widget .panel.progress .thumbnails {
   margin-top: 4px;
 }
+
 #cloudinary-widget .panel.camera .form .button_holder {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 #cloudinary-widget .panel.camera .note {
   font-weight: normal;
   font-size: 13px;
   padding: 4px 20px 4px 20px;
 }
+
+
 #cloudinary-widget .panel.camera video {
-  border-width: 0px;
+  border-width:0px;
 }
+
 #cloudinary-widget .camera .form {
-  background: white;
+  background:white;
   border: 1px solid #eee;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -130,9 +157,12 @@ a.cloudinary-button-overrides:hover {
   margin: 0px 20px 0px 20px;
   padding-top: 10px;
 }
+
+
 #cloudinary-overlay.inline .widget {
   border: 1px solid #ddd;
 }
+
 @media screen and (max-width: 767px) {
   #cloudinary-widget .drag_area {
     border: none;
