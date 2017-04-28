@@ -7,7 +7,6 @@ jQuery(document).ready(function($) {
   listenForDetailsClick();
   setDropdownOptions();
   listenForFormChange();
-  listenForSubmit();
 
   function listenForDetailsClick() {
     jQuery('.edit-details-button').click(function(){
@@ -18,13 +17,15 @@ jQuery(document).ready(function($) {
 
   function toggleImageDetails(button) {
     var form = jQuery(button).siblings('.image-details__form');
-    var text = jQuery(button).text();
-    if(text == '+ details'){
+    var buttonText = jQuery(button).text();
+    var detailsText = jQuery(button).siblings('.image-details__text');
+    if(buttonText == '+ details'){
       jQuery(button).text('- hide details');
-    }else if(text == '- hide details'){
+    }else if(buttonText == '- hide details'){
       jQuery(button).text('+ details');
     }
     jQuery(button).toggleClass('open');
+    detailsText.toggle();
     form.toggleClass('open').toggle();
   }
 
@@ -74,6 +75,7 @@ jQuery(document).ready(function($) {
       var imgUrl = data[0].secure_url;
       var imageSection = jQuery('.custom-form__add_new_image.empty');
       var imageDetails = imageSection.find('.image-details');
+      cloneAddNewImageSection(imageSection, publicId);
       // set publicId and original-filename data attributes
       imageDetails.attr('data-image-id', publicId);
       imageDetails.attr('data-original-filename', filename);
@@ -81,7 +83,6 @@ jQuery(document).ready(function($) {
       // replace header with filename
       var imageDetailsSection = jQuery(".image-details[data-image-id*=" + publicId + "]")
       imageDetailsSection.find('.image-filename').text(filename);
-      cloneAddNewImageSection(imageSection, publicId);
       imageDetailsSection.find('.edit-details-button').toggle();
     });
   }
@@ -109,6 +110,9 @@ jQuery(document).ready(function($) {
     jQuery('.image-details-input').change(function(el) {
       buildDetailsObject(el);
     });
+    jQuery('.image-details-select').change(function(el) {
+      buildDetailsObject(el);
+    })
   }
 
   function buildDetailsObject(el) {
@@ -126,6 +130,11 @@ jQuery(document).ready(function($) {
     IMAGE_DETAILS[publicId][field] = value;
     IMAGE_DETAILS[publicId].url = imgUrl;
     setHiddenField();
+    setDetailText(publicId);
+  }
+
+  function titleize(string){
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   function buildString() {
@@ -136,9 +145,8 @@ jQuery(document).ready(function($) {
       detailString.push("Cloudinary Image ID: " + publicId);
       detailString.push("Cloudinary URL: " + detailsObj.url);
       delete detailsObj.url;
-      // detailString.push("Cloudinary Image URL: " + )
       jQuery.each(detailsObj, function(key, val){
-        key = key.charAt(0).toUpperCase() + key.slice(1);
+        key = titleize(key);
         detailString.push(key + ": " + val + ", ");
       });
       detailString.push("=========================\n");
@@ -153,14 +161,26 @@ jQuery(document).ready(function($) {
     jQuery("#" + inputId).val(imageDetails);
   }
 
-  // function listenForSubmit() {
-  //   $('#gform_1 input[type=submit]').click(function () {
-  //     handleSubmit();
-  //   });
-  // }
-  //
-  // function handleSubmit() {
-  //   jQuery('.custom-form').hide();
-  // }
+  function setDetailText(publicId) {
+    var imageDetails = jQuery(".image-details[data-image-id='" + publicId + "']")[0];
+    var detailsText = jQuery(imageDetails).find('.image-details__text')[0];
+    var spans = jQuery();
+    jQuery.map(IMAGE_DETAILS[publicId], function(value, key){
+      if(key == 'filename'){
+        return;
+      }
+      var text = titleize(key) + ": " + value;
+      spans = spans.add(jQuery('<span />').addClass('image-details__text-line').html(text));
+    });
+    jQuery(detailsText).empty().append(spans);
+  }
+
+  function listenForDelete(){
+    jQuery('.delete-image-button').click(function(e){
+      // remove the image from IMAGE_DETAILS
+      // call the cloudinary delete method
+      // e.target
+    })
+  }
 
 });

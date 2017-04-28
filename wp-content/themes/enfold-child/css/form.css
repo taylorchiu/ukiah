@@ -11,9 +11,10 @@
   text-decoration: uppercase;
 }
 .custom-form {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding-top: 50px;
 }
 .custom-form__add_new_image {
   width: 900px;
@@ -21,7 +22,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: whitesmoke;
 }
 .custom-form__section {
   width: 900px;
@@ -50,6 +50,15 @@
   padding: 20px;
   width: 50%;
 }
+.image-details__text {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  padding-left: 19px;
+}
+.image-details__text-line {
+  display: block;
+}
 .image-details-select, #top .main_color select {
   background-color: white;
   margin: 4px 0;
@@ -61,13 +70,15 @@
   font-size: 24px;
 }
 .edit-details-button {
+  color: gray;
+  cursor: pointer;
+  font-weight: bold;
   display: none;
   padding-left: 8px;
-  cursor: pointer;
 }
 .image-details__form {
   display: none;
-  padding-left: 14px;
+  padding-left: 19px;
 }
 .form-toggle {
   display: flex;
