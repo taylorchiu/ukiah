@@ -23,6 +23,12 @@
   align-items: center;
   justify-content: center;
 }
+@media screen and (max-width: 768px) {
+  .custom-form__add_new_image {
+    width: auto;
+    flex-direction: column;
+  }
+}
 .custom-form__section {
   width: 900px;
   min-height: 230px;
@@ -32,6 +38,12 @@
 }
 .custom-form__section:hover {
   background-color: whitesmoke;
+}
+@media screen and (max-width: 768px) {
+  .custom-form__section {
+    width: auto;
+    flex-direction: column;
+  }
 }
 .custom-form__image-container {
   align-items: center;
@@ -43,12 +55,23 @@
   text-align: right;
   width: 50%;
 }
+@media screen and (max-width: 768px) {
+  .custom-form__image-container {
+    width: auto;
+    justify-content: center;
+  }
+}
 .image-details {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: 20px;
   width: 50%;
+}
+@media screen and (max-width: 768px) {
+  .image-details {
+    width: auto;
+  }
 }
 .image-details__text {
   align-items: flex-start;
@@ -64,6 +87,11 @@
   margin: 4px 0;
   padding: 4px 0;
   width: 300px;
+}
+@media screen and (max-width: 768px) {
+  .image-details-select, #top .main_color select {
+    width: 100%;
+  }
 }
 .image-filename {
   color: gray;
