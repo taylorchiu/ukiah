@@ -7,6 +7,7 @@ jQuery(document).ready(function($) {
   listenForDetailsClick();
   setDropdownOptions();
   listenForFormChange();
+  listenForSubmit();
 
   function listenForDetailsClick() {
     jQuery('.edit-details-button').click(function(){
@@ -175,12 +176,18 @@ jQuery(document).ready(function($) {
     jQuery(detailsText).empty().append(spans);
   }
 
-  function listenForDelete(){
+  function listenForDelete() {
     jQuery('.delete-image-button').click(function(e){
       // remove the image from IMAGE_DETAILS
       // call the cloudinary delete method
       // e.target
     })
+  }
+
+  function listenForSubmit() {
+    jQuery('#gform_1 input[type=submit]').click(function () {
+      jQuery('.entry-content-wrapper').children().slice(0,2).hide();
+    });
   }
 
 });
