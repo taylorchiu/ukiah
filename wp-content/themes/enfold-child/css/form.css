@@ -31,9 +31,10 @@
 }
 .custom-form__section {
   width: 900px;
-  min-height: 230px;
+  min-height: 210px;
   display: flex;
   justify-content: center;
+  position: relative;
   background-color: white;
 }
 .custom-form__section:hover {
@@ -41,8 +42,13 @@
 }
 @media screen and (max-width: 768px) {
   .custom-form__section {
-    width: auto;
     flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    width: auto;
+  }
+  .custom-form__section:hover {
+    background-color: white;
   }
 }
 .custom-form__image-container {
@@ -130,6 +136,22 @@
 }
 .cloudinary-thumbnail img {
   border: none !important;
+}
+.delete-image-button {
+  cursor: pointer;
+  position: absolute;
+  bottom: 24px;
+  right: 10px;
+}
+.delete-image-button:hover {
+  color: gray;
+}
+@media screen and (max-width: 768px) {
+  .delete-image-button {
+    position: relative;
+    margin-top: 15px;
+    text-align: center;
+  }
 }
 .gravity_form_field .ginput_container input[type='text'], .gravity_form_field .ginput_container textarea {
   background-color: white !important;

@@ -34,9 +34,10 @@
 
 .custom-form__section {
   width: 900px;
-  min-height: 230px;
+  min-height: 210px;
   display: flex;
   justify-content: center;
+  position: relative;
   background-color: white;
 
   &:hover{
@@ -46,7 +47,12 @@
   @media screen and (max-width: 768px) {
     flex-direction: column;
     justify-content: flex-start;
+    margin-bottom: 20px;
     width: auto;
+
+    &:hover{
+      background-color: white;
+    }
   }
 }
 
@@ -144,6 +150,23 @@
 
 .cloudinary-thumbnail img {
   border: none !important;
+}
+
+.delete-image-button {
+  cursor: pointer;
+  position: absolute;
+  bottom: 24px;
+  right: 10px;
+
+  &:hover {
+    color: gray;
+  }
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+    margin-top: 15px;
+    text-align: center;
+  }
 }
 
 // GRAVITY FORM OVERRIDES

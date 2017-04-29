@@ -8,6 +8,7 @@ jQuery(document).ready(function($) {
   setDropdownOptions();
   listenForFormChange();
   listenForSubmit();
+  listenForDelete();
 
   function listenForDetailsClick() {
     jQuery('.edit-details-button').click(function(){
@@ -180,7 +181,7 @@ jQuery(document).ready(function($) {
     jQuery('.delete-image-button').click(function(e){
       // remove the image from IMAGE_DETAILS
       // call the cloudinary delete method
-      // e.target
+      alert('clicked');
     })
   }
 
