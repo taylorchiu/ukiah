@@ -21,10 +21,10 @@ jQuery(document).ready(function($) {
     var form = jQuery(button).siblings('.image-details__form');
     var buttonText = jQuery(button).text();
     var detailsText = jQuery(button).siblings('.image-details__text');
-    if(buttonText == '+ details'){
-      jQuery(button).text('- hide details');
-    }else if(buttonText == '- hide details'){
-      jQuery(button).text('+ details');
+    if(buttonText == 'edit details'){
+      jQuery(button).text('close details');
+    }else if(buttonText == 'close details'){
+      jQuery(button).text('edit details');
     }
     jQuery(button).toggleClass('open');
     detailsText.toggle();
@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
         sources: ['local'],
         stylesheet: 'http://localhost:8888/wp-content/themes/enfold-child/css/uploader_widget.css',
         thumbnails: '.custom-form__image',
-        thumbnail_transformation: {width: 160, height: 120, crop: 'limit'},
+        thumbnail_transformation: {width: 400, height: 300, crop: 'limit'},
        },
       function(error, result) { console.log(error, result) }
     );
@@ -72,20 +72,29 @@ jQuery(document).ready(function($) {
 
   function listenForCloudinarySuccess() {
     jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
-      var publicId = data[0].public_id.replace('print_requests/', '');
-      var filename = data[0].original_filename.replace(' ', '_') + "." + data[0].format;
-      var imgUrl = data[0].secure_url;
+      var image = {
+        publicId: data[0].public_id.replace('print_requests/', ''),
+        filename: data[0].original_filename.replace(' ', '_') + "." + data[0].format,
+        url: data[0].secure_url,
+        deleteToken: data[0].delete_token,
+      };
+      updateAndSetValues(image.publicId, image);
+
       var imageSection = jQuery('.custom-form__add_new_image.empty');
       var imageDetails = imageSection.find('.image-details');
-      cloneAddNewImageSection(imageSection, publicId);
+      cloneAddNewImageSection(imageSection);
+
       // set publicId and original-filename data attributes
-      imageDetails.attr('data-image-id', publicId);
-      imageDetails.attr('data-original-filename', filename);
-      imageDetails.attr('data-url', imgUrl);
+      imageDetails.attr('data-image-id', image.publicId);
+      imageDetails.attr('data-original-filename', image.filename);
+      imageDetails.attr('data-url', image.url);
       // replace header with filename
-      var imageDetailsSection = jQuery(".image-details[data-image-id*=" + publicId + "]")
-      imageDetailsSection.find('.image-filename').text(filename);
+      var imageDetailsSection = jQuery(".image-details[data-image-id*=" + image.publicId + "]")
+      imageDetailsSection.find('.image-filename').text(image.filename);
       imageDetailsSection.find('.edit-details-button').toggle();
+      imageSection.find('.delete-image-button').delay(1000).fadeToggle();
+      // hide cloudinary delete button on thumbnail
+      jQuery('.cloudinary-delete').hide();
     });
   }
 
@@ -98,6 +107,8 @@ jQuery(document).ready(function($) {
     clone.appendTo(jQuery('.custom-form'));
     clone.find('.image-filename').text('Filename');
     clone.find('.cloudinary-button-overrides').remove();
+    clone.find('.cloudinary-thumbnails').remove();
+    clone.find('.delete-image-button').hide();
     mountUploader(clone);
 
     // prep clone to be current_image
@@ -120,19 +131,25 @@ jQuery(document).ready(function($) {
   function buildDetailsObject(el) {
     var field = el.target.id;
     var value = el.target.value;
-    var publicId = jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-image-id');
-    var filename = jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-original-filename');
-    var imgUrl = jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-url');
-    updateImageDetails(publicId, filename, field, value, imgUrl);
+    var data = {
+      publicId: jQuery(jQuery(el.target).closest('.image-details')[0]).attr('data-image-id')
+    };
+    data[field] = value;
+    updateAndSetValues(data.publicId, data);
   }
 
-  function updateImageDetails(publicId, filename, field, value, imgUrl) {
-    IMAGE_DETAILS[publicId] = IMAGE_DETAILS[publicId] || {};
-    IMAGE_DETAILS[publicId].filename = filename;
-    IMAGE_DETAILS[publicId][field] = value;
-    IMAGE_DETAILS[publicId].url = imgUrl;
+  function updateAndSetValues(publicId, data) {
+    updateImageDetails(publicId, data);
     setHiddenField();
     setDetailText(publicId);
+  }
+
+  function updateImageDetails(publicId, data) {
+    IMAGE_DETAILS[publicId] = IMAGE_DETAILS[publicId] || {};
+    jQuery.each(data, function(key, value) {
+      IMAGE_DETAILS[publicId][key] = IMAGE_DETAILS[publicId][key] || value;
+    });
+    return IMAGE_DETAILS;
   }
 
   function titleize(string){
@@ -146,10 +163,19 @@ jQuery(document).ready(function($) {
       detailString.push("=========================");
       detailString.push("Cloudinary Image ID: " + publicId);
       detailString.push("Cloudinary URL: " + detailsObj.url);
-      delete detailsObj.url;
       jQuery.each(detailsObj, function(key, val){
-        key = titleize(key);
-        detailString.push(key + ": " + val + ", ");
+        // only show the relevant keys to the user
+        switch(key){
+          case 'paper':
+          case 'quantity':
+          case 'size':
+          case 'border':
+            key = titleize(key);
+            detailString.push(key + ": " + val + ", ");
+            break;
+          default:
+            break;
+        }
       });
       detailString.push("=========================\n");
       allImageDetails.push(detailString.join("\n"));
@@ -168,21 +194,45 @@ jQuery(document).ready(function($) {
     var detailsText = jQuery(imageDetails).find('.image-details__text')[0];
     var spans = jQuery();
     jQuery.map(IMAGE_DETAILS[publicId], function(value, key){
-      if(key == 'filename'){
-        return;
+      switch(key){
+        case 'paper':
+        case 'quantity':
+        case 'size':
+        case 'border':
+          var text = titleize(key) + ": " + value;
+          spans = spans.add(jQuery('<span />').addClass('image-details__text-line').html(text));
+          break;
+        default:
+          break;
       }
-      var text = titleize(key) + ": " + value;
-      spans = spans.add(jQuery('<span />').addClass('image-details__text-line').html(text));
+
     });
     jQuery(detailsText).empty().append(spans);
   }
 
+  function removeImage(publicId) {
+    delete IMAGE_DETAILS[publicId];
+    setHiddenField();
+    setDetailText(publicId);
+  }
+
   function listenForDelete() {
     jQuery('.delete-image-button').click(function(e){
-      // remove the image from IMAGE_DETAILS
-      // call the cloudinary delete method
-      alert('clicked');
+      if(confirm('Are you sure you want to delete this image?')){
+        var publicId = jQuery(e.target).parents('.custom-form__image-container')
+                                       .siblings('.image-details')
+                                       .attr('data-image-id')
+        removeImage(publicId);
+        deleteCloudinary(e.target);
+        jQuery(e.target).parents('.custom-form__section').remove();
+      };
     })
+  }
+
+  function deleteCloudinary(el){
+    var cloudinaryButton = jQuery(el).siblings('.cloudinary-thumbnails').find('.cloudinary-delete');
+    jQuery(cloudinaryButton).click();
+    jQuery(cloudinaryButton).parents('ul').remove();
   }
 
   function listenForSubmit() {

@@ -51,6 +51,11 @@
     background-color: white;
   }
 }
+.custom-form__image {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 .custom-form__image-container {
   align-items: center;
   color: white;
@@ -138,13 +143,17 @@
   border: none !important;
 }
 .delete-image-button {
+  display: none;
+  color: gray;
   cursor: pointer;
+  text-align: center;
+  width: 100%;
+  bottom: -20px;
   position: absolute;
-  bottom: 24px;
-  right: 10px;
+  right: 0px;
 }
 .delete-image-button:hover {
-  color: gray;
+  color: dimgray;
 }
 @media screen and (max-width: 768px) {
   .delete-image-button {
