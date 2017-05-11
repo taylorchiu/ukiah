@@ -64,60 +64,95 @@ jQuery(document).ready(function($) {
         sources: ['local'],
         stylesheet: 'http://localhost:8888/wp-content/themes/enfold-child/css/uploader_widget.css',
         thumbnails: '.custom-form__image',
+        // thumbnails: 'false',
         thumbnail_transformation: {width: 400, height: 300, crop: 'limit'},
        },
       function(error, result) { console.log(error, result) }
     );
   }
 
+  function getImageData(datum) {
+    return {
+      publicId: datum.public_id.replace('print_requests/', ''),
+      filename: datum.original_filename.replace(' ', '_') + "." + datum.format,
+      url: datum.secure_url,
+      deleteToken: datum.delete_token,
+    };
+  }
+
   function listenForCloudinarySuccess() {
     jQuery(document).on('cloudinarywidgetsuccess', function(e, data) {
-      var image = {
-        publicId: data[0].public_id.replace('print_requests/', ''),
-        filename: data[0].original_filename.replace(' ', '_') + "." + data[0].format,
-        url: data[0].secure_url,
-        deleteToken: data[0].delete_token,
-      };
-      updateAndSetValues(image.publicId, image);
-
-      var imageSection = jQuery('.custom-form__add_new_image.empty');
-      var imageDetails = imageSection.find('.image-details');
-      cloneAddNewImageSection(imageSection);
-
-      // set publicId and original-filename data attributes
-      imageDetails.attr('data-image-id', image.publicId);
-      imageDetails.attr('data-original-filename', image.filename);
-      imageDetails.attr('data-url', image.url);
-      // replace header with filename
-      var imageDetailsSection = jQuery(".image-details[data-image-id*=" + image.publicId + "]")
-      imageDetailsSection.find('.image-filename').text(image.filename);
-      imageDetailsSection.find('.edit-details-button').toggle();
-      imageSection.find('.delete-image-button').delay(1000).fadeToggle();
-      // hide cloudinary delete button on thumbnail
-      jQuery('.cloudinary-delete').hide();
+      var thumbnails = [];
+      jQuery.each(data, function(index, datum) {
+        var imageData = getImageData(datum);
+        var imageSection = cloneImageSection();
+        setDataAttributes(imageSection, imageData);
+        if (index == 0) {
+          thumbnails = getThumbnails(imageData);
+        }
+        appendThumbnail(thumbnails[index], index, imageData);
+        toggleButtons(imageData.publicId);
+        updateAndSetValues(imageData.publicId, imageData);
+      });
     });
   }
 
-  function cloneAddNewImageSection(current) {
-    var clone = current.clone(true);
-    current.removeClass('custom-form__add_new_image empty')
-           .addClass('custom-form__section');
-    // prevent clone from interfering with thumbnail mounting
-    clone.find('#current_image').attr('id', '');
-    clone.appendTo(jQuery('.custom-form'));
-    clone.find('.image-filename').text('Filename');
-    clone.find('.cloudinary-button-overrides').remove();
-    clone.find('.cloudinary-thumbnails').remove();
-    clone.find('.delete-image-button').hide();
-    mountUploader(clone);
-
-    // prep clone to be current_image
-    current.find('.cloudinary-button-overrides').remove();
-    current.find('#upload_widget_opener').remove();
-    current.find('#current_image').attr('id','');
-    clone.find('.custom-form__image').attr('id','current_image');
-    jQuery.each(clone.find('image-details-input'), function(input){ jQuery(input).val("")});
+  function getThumbnails(imageData) {
+    // the thumbs will be mounted to the first image's section, so find it
+    // grab all the images so we can move each one to its correct section
+    var imageSection = findImageSection(imageData.publicId);
+    return imageSection.find('.cloudinary-thumbnail').detach();
   }
+
+  function appendThumbnail(thumb, index, imageData) {
+      var imageSection = findImageSection(imageData.publicId);
+      imageSection.find('.custom-form__image').append(thumb);
+  }
+
+  function cloneImageSection() {
+    var imageSection = jQuery('.custom-form__add_new_image.empty');
+    imageSection.find('.cloudinary-button-overrides').remove();
+    // clear out inputs before cloning
+    jQuery.each(imageSection.find('image-details-input'), function(input){ jQuery(input).val("")});
+    var clone = imageSection.clone(true);
+    imageSection.removeClass('custom-form__add_new_image empty')
+                .addClass('custom-form__section');
+    clone.appendTo(jQuery('.custom-form'));
+    clone.find('.cloudinary-thumbnails').remove();
+    mountUploader(clone);
+    imageSection.find('#upload_widget_opener').remove();
+    return imageSection;
+  }
+
+  function setDataAttributes(imageSection, imageData) {
+    imageSection.attr('data-image-id', imageData.publicId);
+    var imageDetails = imageSection.find('.image-details');
+    imageDetails.attr('data-image-id', imageData.publicId);
+    imageDetails.attr('data-original-filename', imageData.filename);
+    imageDetails.attr('data-url', imageData.url);
+    // set header text
+    imageDetails.find('.image-filename').text(imageData.filename);
+  }
+
+  function findImageDetailsSection(publicId) {
+    return jQuery(".image-details[data-image-id*=" + publicId + "]")
+  }
+
+  function findImageSection(publicId) {
+    return jQuery('.custom-form__section[data-image-id*=' + publicId + ']');
+  }
+
+  function toggleButtons(publicId) {
+    var imageDetailsSection = findImageDetailsSection(publicId);
+    var imageSection = findImageSection(publicId);
+    imageDetailsSection.find('.edit-details-button').toggle();
+    imageSection.find('.delete-image-button').delay(1000).fadeToggle();
+    jQuery('.cloudinary-delete').hide();
+  }
+
+
+  /////////////////////////////////////////////////////////////////////////////
+
 
   function listenForFormChange() {
     jQuery('.image-details-input').change(function(el) {
@@ -190,8 +225,8 @@ jQuery(document).ready(function($) {
   }
 
   function setDetailText(publicId) {
-    var imageDetails = jQuery(".image-details[data-image-id='" + publicId + "']")[0];
-    var detailsText = jQuery(imageDetails).find('.image-details__text')[0];
+    var imageDetailsSection = findImageDetailsSection(publicId);
+    var detailsText = jQuery(imageDetailsSection).find('.image-details__text')[0];
     var spans = jQuery();
     jQuery.map(IMAGE_DETAILS[publicId], function(value, key){
       switch(key){
