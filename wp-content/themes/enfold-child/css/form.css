@@ -23,6 +23,9 @@
   align-items: center;
   justify-content: center;
 }
+.custom-form__add_new_image.empty {
+  height: auto;
+}
 @media screen and (max-width: 768px) {
   .custom-form__add_new_image {
     width: auto;
@@ -73,9 +76,11 @@
   }
 }
 .image-details {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  height: 100%;
   padding: 20px;
   width: 50%;
 }
@@ -105,19 +110,21 @@
   }
 }
 .image-filename {
-  color: gray;
+  color: whitesmoke;
   font-size: 24px;
+  text-align: left;
+}
+.empty .image-filename {
+  color: gray;
 }
 .edit-details-button {
   color: gray;
   cursor: pointer;
   font-weight: bold;
   display: none;
-  padding-left: 8px;
 }
 .image-details__form {
   display: none;
-  padding-left: 19px;
 }
 .form-toggle {
   display: flex;
@@ -157,7 +164,7 @@
 }
 @media screen and (max-width: 768px) {
   .delete-image-button {
-    position: relative;
+    position: absolute;
     margin-top: 15px;
     text-align: center;
   }

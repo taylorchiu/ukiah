@@ -26,6 +26,10 @@
   align-items: center;
   justify-content: center;
 
+  &.empty {
+    height: auto;
+  }
+
   @media screen and (max-width: 768px) {
     width: auto;
     flex-direction: column;
@@ -79,9 +83,11 @@
 }
 
 .image-details {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  height: 100%;
   padding: 20px;
   width: 50%;
 
@@ -113,8 +119,13 @@
 }
 
 .image-filename {
-  color: gray;
+  color: whitesmoke;
   font-size: 24px;
+  text-align: left;
+}
+
+.empty .image-filename {
+  color: gray;
 }
 
 .edit-details-button {
@@ -122,12 +133,10 @@
   cursor: pointer;
   font-weight: bold;
   display: none;
-  padding-left: 8px;
 }
 
 .image-details__form {
   display: none;
-  padding-left: 19px;
 }
 
 .form-toggle {
@@ -173,7 +182,7 @@
   }
 
   @media screen and (max-width: 768px) {
-    position: relative;
+    position: absolute;
     margin-top: 15px;
     text-align: center;
   }

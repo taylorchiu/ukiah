@@ -1,0 +1,32 @@
+body #tabtastic .avia-builder-el-first, body .container_wrap, .avia-builder-el-first {
+  padding-top: 0 !important;
+}
+#top .social_bookmarks {
+  display: inline-flex;
+  height: auto;
+}
+#top .social_bookmarks li {
+  width: 40px;
+}
+#top .social_bookmarks li a {
+  float: left;
+  width: 40px;
+  line-height: 40px;
+  display: block;
+  margin: 0px;
+  outline: none;
+  padding: 0;
+  min-height: 40px;
+  height: 100%;
+  overflow: visible;
+  z-index: 2;
+  position: relative;
+  text-align: center;
+}
+.social_bookmarks [data-av_icon]:before {
+  color: white;
+  font-size: 20px;
+}
+td {
+  padding: 4px 12px;
+}
