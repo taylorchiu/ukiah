@@ -1,19 +1,25 @@
-a.cloudinary-button-overrides {
-  background-color: silver;
+.upload_widget_section > a.avia-button {
+  background-color: #d4390e;
+  border-radius: 3px;
   box-shadow: none;
-  color: gray;
+  color: white;
   cursor: pointer;
-  font-size: 24px;
-  line-height: 24px;
-  width: 200px;
-  height: 160px;
-  padding: 65px 26px 26px 26px;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 16px;
+  width: 400px;
+  height: 80px;
+  padding: 30px;
   text-align: center;
 }
-a.cloudinary-button-overrides:hover {
-  background-color: gray;
-  border: 2px solid gray;
+.upload_widget_section > a.avia-button:hover {
+  background-color: #af2f0c;
+  border: 2px solid #af2f0c;
   color: white;
+}
+.upload_widget_section {
+  margin-bottom: 40px;
+  text-align: center;
 }
 #cloudinary-overlay.with_theme {
   display: block;
@@ -38,25 +44,8 @@ a.cloudinary-button-overrides:hover {
   margin: 0 0 10px 0;
   height: 30px;
 }
-#cloudinary-navbar .source {
-  border-color: none;
-  border-right: 0px;
-  border-bottom: 3px solid none;
-  height: 30px;
-}
-#cloudinary-navbar .source .label {
-  font-size: 14px;
-  line-height: 22px;
-}
-#cloudinary-navbar .source .icon {
+#cloudinary-navbar .sources {
   display: none;
-}
-#cloudinary-navbar .source.active {
-  background: none;
-  border-bottom: 3px solid gray;
-}
-#cloudinary-navbar .source.active .label {
-  color: gray;
 }
 #cloudinary-widget .drag_area {
   background: white;
@@ -67,13 +56,13 @@ a.cloudinary-button-overrides:hover {
   margin: 30px 20px 0px 20px;
 }
 #cloudinary-widget .drag_area.in {
-  border-color: #01bb16;
+  border-color: #d4390e;
 }
 #cloudinary-navbar .sources .icon {
   background-position-x: 0px;
 }
 #cloudinary-navbar .close {
-  color: #555;
+  color: gray;
 }
 #cloudinary-widget .button, #cloudinary-widget .button.small_button {
   box-sizing: border-box;
@@ -92,7 +81,7 @@ a.cloudinary-button-overrides:hover {
   line-height: 25px;
 }
 #cloudinary-widget .button:hover, #cloudinary-widget .button.small_button:hover, #cloudinary-widget .upload_button_holder:hover .button {
-  background: gray;
+  background: #d4390e;
   color: white;
 }
 #cloudinary-widget .panel {
@@ -101,7 +90,7 @@ a.cloudinary-button-overrides:hover {
 #cloudinary-widget .panel.local {
   margin-top: 20px;
 }
-#cloudinary-widget .panel.local .drag_area .drag_content .label {
+#cloudinary-widget .panel.local .drag_area .drag_content span {
   color: gray;
   font-size: 22px;
 }

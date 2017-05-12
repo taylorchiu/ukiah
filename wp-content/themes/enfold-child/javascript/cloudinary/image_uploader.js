@@ -2,10 +2,11 @@ jQuery(document).ready(function($) {
   var imageDetailString;
   IMAGE_DETAILS = {};
 
-  mountUploader(jQuery('.custom-form__add_new_image.empty'));
+  mountUploader(jQuery('.upload_widget_section'));
+  clearInputs();
+  setDropdownOptions();
   listenForCloudinarySuccess();
   listenForDetailsClick();
-  setDropdownOptions();
   listenForFormChange();
   listenForSubmit();
   listenForDelete();
@@ -42,13 +43,15 @@ jQuery(document).ready(function($) {
     // IMPORTANT: label must match the Gravity Forms field label!
     var dropdowns = [{ id: 'paper', label: 'paper_options' }, { id: 'border', label: 'border_options' }];
     dropdowns.forEach(function(dropdown) {
-      // get input id
       var inputId = jQuery("label:contains('" + dropdown.label + "')").attr('for');
       var options = jQuery('select#' + inputId + ' option');
+      // first append a default option as a placeholder
+      jQuery('select#' + dropdown.id).append(
+        "<option value=''>" + titleize(dropdown.id) + "</option>"
+      );
       jQuery(options).each(function(index, option) {
-        // var option = new Option(option.val, option.val);
         jQuery('select#' + dropdown.id).append(jQuery(option));
-      })
+      });
     })
   }
 
@@ -58,13 +61,12 @@ jQuery(document).ready(function($) {
         upload_preset: 'ztbxelcz',
         cropping: null,
         folder: 'test',
-        button_caption: '+ Add image',
-        button_class: 'cloudinary-button-overrides',
+        button_caption: 'Click here to add your image',
+        button_class: 'avia-button',
         show_powered_by: false,
         sources: ['local'],
         stylesheet: 'http://localhost:8888/wp-content/themes/enfold-child/css/uploader_widget.css',
         thumbnails: '.custom-form__image',
-        // thumbnails: 'false',
         thumbnail_transformation: {width: 400, height: 300, crop: 'limit'},
        },
       function(error, result) { console.log(error, result) }
@@ -98,7 +100,7 @@ jQuery(document).ready(function($) {
   }
 
   function getThumbnails(imageData) {
-    // the thumbs will be mounted to the first image's section, so find it
+    // the thumbs will be mounted to the first image's section
     // grab all the images so we can move each one to its correct section
     var imageSection = findImageSection(imageData.publicId);
     return imageSection.find('.cloudinary-thumbnail').detach();
@@ -111,17 +113,23 @@ jQuery(document).ready(function($) {
 
   function cloneImageSection() {
     var imageSection = jQuery('.custom-form__add_new_image.empty');
-    imageSection.find('.cloudinary-button-overrides').remove();
-    // clear out inputs before cloning
-    jQuery.each(imageSection.find('image-details-input'), function(input){ jQuery(input).val("")});
+    imageSection.find('.avia-button').remove();
+    clearInputs(imageSection);
     var clone = imageSection.clone(true);
     imageSection.removeClass('custom-form__add_new_image empty')
                 .addClass('custom-form__section');
     clone.appendTo(jQuery('.custom-form'));
     clone.find('.cloudinary-thumbnails').remove();
-    mountUploader(clone);
     imageSection.find('#upload_widget_opener').remove();
     return imageSection;
+  }
+
+  function clearInputs(imageSection = null) {
+    var sections = imageSection || jQuery('.custom-form__section, .custom-form__add_new_image.empty')
+    jQuery.each(sections, function(index, section){
+      var inputs = jQuery(section).find('.image-details-input, .image-details-select');
+      jQuery.each(inputs, function(index, input){ jQuery(input).val("") } );
+    });
   }
 
   function setDataAttributes(imageSection, imageData) {
@@ -149,10 +157,6 @@ jQuery(document).ready(function($) {
     imageSection.find('.delete-image-button').delay(1000).fadeToggle();
     jQuery('.cloudinary-delete').hide();
   }
-
-
-  /////////////////////////////////////////////////////////////////////////////
-
 
   function listenForFormChange() {
     jQuery('.image-details-input').change(function(el) {
@@ -240,7 +244,6 @@ jQuery(document).ready(function($) {
         default:
           break;
       }
-
     });
     jQuery(detailsText).empty().append(spans);
   }

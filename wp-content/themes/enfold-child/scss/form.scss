@@ -1,7 +1,7 @@
 .upload_widget_button {
-  border: 2px solid gray;
+  border: 2px solid #6b7487;
   box-shadow: none;
-  color: gray;
+  color: #6b7487;
   cursor: pointer;
   font-family: Montserrat, "Helvetica Neue", sans-serif;
   font-size: 18px;
@@ -16,7 +16,6 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
 }
 
 .custom-form__add_new_image {
@@ -199,4 +198,15 @@
       }
     }
   }
+}
+
+#gform_submit_button_1 {
+  height: 60px;
+  width: 200px;
+  background-color: #6b7487;
+}
+
+.gform_wrapper .gform_footer:not(.top_label) {
+  margin: 0 auto;
+  text-align: center;
 }
