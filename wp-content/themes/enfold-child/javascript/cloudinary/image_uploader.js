@@ -8,7 +8,6 @@ jQuery(document).ready(function($) {
   listenForCloudinarySuccess();
   listenForDetailsClick();
   listenForFormChange();
-  listenForSubmit();
   listenForDelete();
 
   function listenForDetailsClick() {
@@ -41,13 +40,16 @@ jQuery(document).ready(function($) {
 
   function setDropdownOptions() {
     // IMPORTANT: label must match the Gravity Forms field label!
-    var dropdowns = [{ id: 'paper', label: 'paper_options' }, { id: 'border', label: 'border_options' }];
+    var dropdowns = [
+      { id: 'paper', label: 'paper_options', text: 'Select Paper Type' },
+      { id: 'border', label: 'border_options', text: 'Select Border' }
+    ];
     dropdowns.forEach(function(dropdown) {
       var inputId = jQuery("label:contains('" + dropdown.label + "')").attr('for');
       var options = jQuery('select#' + inputId + ' option');
       // first append a default option as a placeholder
       jQuery('select#' + dropdown.id).append(
-        "<option value=''>" + titleize(dropdown.id) + "</option>"
+        "<option value=''>" + dropdown.text + "</option>"
       );
       jQuery(options).each(function(index, option) {
         jQuery('select#' + dropdown.id).append(jQuery(option));
@@ -61,7 +63,7 @@ jQuery(document).ready(function($) {
         upload_preset: 'ztbxelcz',
         cropping: null,
         folder: 'test',
-        button_caption: 'Click here to add your image',
+        button_caption: 'Add image',
         button_class: 'avia-button',
         show_powered_by: false,
         sources: ['local'],
@@ -271,12 +273,6 @@ jQuery(document).ready(function($) {
     var cloudinaryButton = jQuery(el).siblings('.cloudinary-thumbnails').find('.cloudinary-delete');
     jQuery(cloudinaryButton).click();
     jQuery(cloudinaryButton).parents('ul').remove();
-  }
-
-  function listenForSubmit() {
-    jQuery('#gform_1 input[type=submit]').click(function () {
-      jQuery('.entry-content-wrapper').children().slice(0,2).hide();
-    });
   }
 
 });

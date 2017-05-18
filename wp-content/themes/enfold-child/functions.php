@@ -9,7 +9,7 @@ function enqueue_parent_styles() {
   $child_theme_url 	= get_stylesheet_directory_uri();
 
   // WP-SCSS plugin automatically compiles all css files
-  // Not sure why the child style.css has to live on the root or it won't override the parent style.css
+  // The child style.css has to live on the root or it won't override the parent style.css
   // wp_enqueue_style( 'parent-style', $template_url.'/style.css' );
   // wp_enqueue_style( 'uploader_widget', $child_theme_url.'/scss/uploader_widget.scss' );
   // wp_enqueue_style( 'form', $child_theme_url.'/scss/form.scss' );
@@ -19,6 +19,18 @@ function enqueue_parent_styles() {
   wp_enqueue_script('cloudinary');
   wp_register_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js', array('jquery'));
   wp_enqueue_script('image_uploader', $child_theme_url.'/javascript/cloudinary/image_uploader.js' );
-  wp_register_script('form', $child_theme_url.'/javascript/form.js', array('jquery'));
-  wp_enqueue_script('form');
 }
+
+// Register new icon as a theme icon
+function avia_add_custom_icon($icons) {
+	$icons['yelp']	 = array( 'font' =>'fontello', 'icon' => 'uf1e9');
+	return $icons;
+}
+add_filter('avf_default_icons','avia_add_custom_icon', 10, 1);
+
+// Add new icon as an option for social icons
+function avia_add_custom_social_icon($icons) {
+	$icons['yelp'] = 'yelp';
+	return $icons;
+}
+add_filter('avf_social_icons_options','avia_add_custom_social_icon', 10, 1);

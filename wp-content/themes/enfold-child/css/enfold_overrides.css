@@ -1,5 +1,10 @@
-body #tabtastic .avia-builder-el-first, body .container_wrap, .avia-builder-el-first {
+body #tabtastic .avia-builder-el-first, body .container_wrap .avia-builder-el-first {
   padding-top: 0 !important;
+  text-align: inherit;
+}
+.content, .sidebar {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 #top .social_bookmarks {
   display: inline-flex;
@@ -29,4 +34,50 @@ body #tabtastic .avia-builder-el-first, body .container_wrap, .avia-builder-el-f
 }
 td {
   padding: 4px 12px;
+}
+#top .av-section-tab-title {
+  padding: 10px 50px 0px 50px;
+  display: inline-block;
+  text-decoration: none;
+}
+@media screen and (max-width: 767px) {
+  #top .av-section-tab-title {
+    padding: 10px 20px 0 20px;
+  }
+}
+@media screen and (max-width: 580px) {
+  #top .av-section-tab-title {
+    padding: 0;
+  }
+}
+.avia-tab-title-padding-none .av-outer-tab-title {
+  top: 0;
+}
+.av-inner-tab-title {
+  font-size: 16px;
+}
+@media screen and (max-width: 580px) {
+  .av-tab-section-image {
+    display: none;
+  }
+}
+.av-tab-section-tab-title-container .avia-tab-title-padding-none {
+  padding: 0;
+}
+@media screen and (max-width: 580px) {
+  .av-tab-section-tab-title-container .avia-tab-title-padding-none {
+    left: 0 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 580px) {
+  .av-tab-arrow-container {
+    display: none;
+  }
+}
+@media screen and (max-width: 580px) {
+  .av-tab-section-inner-container .avia-section-no-padding {
+    left: 20px;
+  }
 }
